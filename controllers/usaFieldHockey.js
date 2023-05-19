@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require("fs");
-const utils = require('./utils');
-
+const utils = require('../utils');
 
 let csvRecords = [];
 
@@ -101,50 +100,59 @@ async function paginate(page) {
 }
 
 
-(async () => {
 
-  await readData();
-  console.log('warming up');
-  const browser = await puppeteer.launch({
-     headless: true,
-     devtools: true,
-     //slowMo: 100
-  });
-  console.log('spawned browser');
+async function init () {
+    console.log('init');
+    await readData();
+    console.log('warming up');
+    const browser = await puppeteer.launch({
+        headless: true,
+        devtools: true,
+        //slowMo: 100
+    });
+    console.log('spawned browser');
 
-  const page = await browser.newPage();
-  console.log('spawned new page');
+    const page = await browser.newPage();
+    console.log('spawned new page');
 
-  page.on('console', async (msg) => {
-    const msgArgs = msg.args();
-    for (let i = 0; i < msgArgs.length; ++i) {
-      console.log(await msgArgs[i].jsonValue());
-    }
-  });
+    page.on('console', async (msg) => {
+        const msgArgs = msg.args();
+        for (let i = 0; i < msgArgs.length; ++i) {
+        console.log(await msgArgs[i].jsonValue());
+        }
+    });
 
-  await page.goto(`https://usafieldhockey.webpoint.us/wp15/Companies/Clubs.wp`, {waitUntil: 'domcontentloaded', timeout: 5000}); //{waitUntil: 'load', timeout: 5000});
+    await page.goto(`https://usafieldhockey.webpoint.us/wp15/Companies/Clubs.wp`, {waitUntil: 'domcontentloaded', timeout: 5000}); //{waitUntil: 'load', timeout: 5000});
     
-  for (i = 0; i < csvRecords[0].length; i++) {
+    for (i = 0; i < csvRecords[0].length; i++) {
+        await setUpPage(page,csvRecords[0][i]);
 
-    await setUpPage(page,csvRecords[0][i]);
-
-    try {
-      //await paginate(page);
-
-      let ret = await scrapePage(csvRecords[0][i], page);
-      //console.log(ret);
-
-      let singleResult = [];
-      singleResult.push("\n");
-      result.push(ret);
-      let csv = result.join();
-      fs.appendFileSync("data/output/backlink-report.csv", csv);
-      result = [];
-    } catch(e) {
-      console.error(e);
+        try {
+            let ret = await scrapePage(csvRecords[0][i], page);
+            let singleResult = [];
+            singleResult.push("\n");
+            result.push(ret);
+            let csv = result.join();
+            fs.appendFileSync("data/output/backlink-report.csv", csv);
+            result = [];
+        } catch(e) {
+            console.error('there was an error');
+            console.error(e);
+        }
     }
-  }
-  await page.close();
-  await browser.close();
-  
-})();
+    await page.close();
+    await browser.close();
+}
+
+
+exports.usaFieldHockey = async (req, res, next) => {
+    try {
+        console.log('usaFieldHockey');
+        await init();
+        res.send({msg: 'ok'});
+      } catch (error) {
+        console.error('there was an error');
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+};
