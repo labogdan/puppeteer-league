@@ -47,10 +47,8 @@ async function scrapePageForContactInfo(page) {
     returnValue.push(',');
     return returnValue;
   });
-  console.log('**************');
-  console.log(retVal);
-  return retVal;
 
+  return retVal;
 }
 
 async function scrapePage(page, director) {
@@ -73,16 +71,30 @@ async function scrapePage(page, director) {
     document.querySelectorAll('[id^="ContentTopLevel_ContentPlaceHolder1_TS1_repTeams_hlTeam"]').forEach((row) => {
       returnValue.push(director);
       returnValue.push(retVal);
-      returnValue.push(row.innerHTML);
+      returnValue.push([row.innerHTML]);
+      returnValue.push([row.href]);
       returnValue.push('\n');  
     });
     return returnValue;
   }, retVal, director);
 
-  console.log(retVals);
   return retVals;
 }
 
+async function scrapePageForOrgInfo(page, previousData) {
+  await page.waitForSelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName', {timeout: 10000});
+
+  let retVal = await page.evaluate((previousData) => {
+    let data = [''];
+    data.push(previousData);
+    data.push(document.querySelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName').textContent);
+    data.push(getParameterByName('orgid', document.location.href));
+    data.push(getParameterByName('orgteamid', document.location.href));
+    data.push(getParameterByName('team', document.location.href));
+  }, previousData);
+
+  return retVal;
+}
 async function paginate(page) {
   console.log('paginating');
   await utils.wait(1000);
@@ -100,8 +112,6 @@ async function paginate(page) {
   await utils.wait(4000);
   console.log('clicked pagination');
 }
-
-
 
 async function init () {
     console.log('init');
@@ -136,10 +146,12 @@ async function init () {
 
             await page.goto(`https://www.perfectgame.org/Events/TournamentSchedule.aspx?event=${csvRecords[0][i][1]}`, {waitUntil: 'domcontentloaded', timeout: 15000});
             let ret = await scrapePage(page, ret1);
+
             result.push('');
             result.push(ret);
             result.push('\n');
-            
+
+            // write to the csv file
             let csv = result.join();
             fs.appendFileSync("data/output/backlink-report.csv", csv);
             result = [];
