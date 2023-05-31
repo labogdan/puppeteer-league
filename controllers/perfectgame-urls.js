@@ -109,7 +109,7 @@ async function init () {
             result.push('\n');
             result.push(ret);
             let csv = result.join();
-            fs.appendFileSync("data/output/backlink-report.csv", csv);
+            fs.appendFileSync("data/output/perfectgame-export.csv", csv);
             result = [];
             utils.wait(2000);
             await paginate(page);

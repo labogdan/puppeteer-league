@@ -5,7 +5,7 @@ const utils = require('../utils');
 let csvRecords = [];
 
 async function readData() {
-  const readStream = fs.readFileSync('data/input/urls.csv', {
+  const readStream = fs.readFileSync('data/input/perfectgame-urls1.csv', {
     encoding: 'utf8',
   });
   
@@ -68,7 +68,8 @@ async function scrapePage(page, director) {
 
   let retVals = await page.evaluate((retVal, director) => {
     let returnValue = [''];
-    document.querySelectorAll('[id^="ContentTopLevel_ContentPlaceHolder1_TS1_repTeams_hlTeam"]').forEach((row) => {
+    let teams = document.querySelectorAll('[id^="ContentTopLevel_ContentPlaceHolder1_TS1_repTeams_hlTeam"]');
+    teams.forEach((row) => {
       returnValue.push(director);
       returnValue.push(retVal);
       returnValue.push([row.innerHTML]);
@@ -81,20 +82,6 @@ async function scrapePage(page, director) {
   return retVals;
 }
 
-async function scrapePageForOrgInfo(page, previousData) {
-  await page.waitForSelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName', {timeout: 10000});
-
-  let retVal = await page.evaluate((previousData) => {
-    let data = [''];
-    data.push(previousData);
-    data.push(document.querySelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName').textContent);
-    data.push(getParameterByName('orgid', document.location.href));
-    data.push(getParameterByName('orgteamid', document.location.href));
-    data.push(getParameterByName('team', document.location.href));
-  }, previousData);
-
-  return retVal;
-}
 async function paginate(page) {
   console.log('paginating');
   await utils.wait(1000);

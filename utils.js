@@ -14,4 +14,19 @@ exports.getParameterByName = (name, url) => {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
+exports.find = (parent, selector) => {
+  let foundElements = [];
+  let outerElements = document.querySelectorAll(parent);
+
+  for (let i = 0; i < outerElements.length; i++) {
+      let innerElements = outerElements[i].querySelectorAll(selector);
+      for (let j = 0; j < innerElements.length; j++) {
+          foundElements.push(innerElements[j]);
+      }
+  }
+
+  return foundElements;
+}
+
+
 module.exports = exports;

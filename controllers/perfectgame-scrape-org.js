@@ -23,33 +23,30 @@ async function setUpPage(page, record) {
 }
 
 async function scrapePageForOrgInfo(page, previousData) {
-  await page.waitForSelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName', {timeout: 10000});
+  await page.waitForSelector('#ContentTopLevel_ContentPlaceHolder1_lblTeamHomeTown', {timeout: 10000});
   let data = [''];
 
-  let orgName = await page.evaluate(() => {
-    return document.querySelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName').textContent;
-  });
-
-  let hometown = await page.evaluate(() => {
+let hometown = await page.evaluate(() => {
     return document.querySelector('#ContentTopLevel_ContentPlaceHolder1_lblTeamHomeTown').textContent;
   });
 
-  let orgUrl = await page.evaluate(() => {
-    return document.querySelector('#ContentTopLevel_ContentPlaceHolder1_hlOrganizationName').href;
+  let totalTeams = await page.evaluate(() => {
+    return document.querySelector('#ContentTopLevel_ContentPlaceHolder1_lblTotalTeams').textContent;
   });
 
+  let pgTopFinishesNumber = await page.evaluate(() => {
+    return document.querySelector('#ContentTopLevel_ContentPlaceHolder1_lblChampionship').childNodes[0].textContent;
+  });
 
-  let ids = await page.evaluate(() => {
-    return document.location.href;
-  },);
+  let pgTopFinishesDetails = await page.evaluate(() => {
+    return document.querySelector('#ContentTopLevel_ContentPlaceHolder1_lblChampionship').childNodes[2].textContent;
+  });
     
     data.push(previousData);
-    data.push(orgName);
     data.push(hometown);
-    data.push(utils.getParameterByName('orgid', ids));
-    data.push(utils.getParameterByName('orgteamid', ids));
-    data.push(utils.getParameterByName('team', ids));
-    data.push(orgUrl);
+    data.push(totalTeams);
+    data.push(pgTopFinishesNumber);
+    data.push(pgTopFinishesDetails);
 
     console.log(data);
 
@@ -108,7 +105,7 @@ async function init () {
 }
 
 
-exports.perfectgameScrapeExtraInfo = async (req, res, next) => {
+exports.perfectgameScrapeOrg = async (req, res, next) => {
     try {
         console.log('perfectgameScrape');
         await init();
