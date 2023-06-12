@@ -2,19 +2,10 @@ const puppeteer = require('puppeteer');
 const fs = require("fs");
 const utils = require('../utils');
 
+let INPUT_FILE = '';
+let INPUT_URL = 'https://www.perfectgame.org/schedule/?Type=Tournaments';
+let OUTPUT_FILE = 'data/output/perfectgame-urls.csv';
 let csvRecords = [];
-
-async function readData() {
-  const readStream = fs.readFileSync('data/input/usafieldhockey-urls.csv', {
-    encoding: 'utf8',
-  });
-  
-  csvRecords.push(
-    readStream.split(/\r?\n/).map((line) => {
-        return line.split(',');
-    })
-  );  
-}
 
 let result = [];
 
@@ -94,13 +85,9 @@ async function init () {
         }
     });
 
-    await page.goto(`https://www.perfectgame.org/schedule/?Type=Tournaments`, {waitUntil: 'domcontentloaded', timeout: 15000}); //{waitUntil: 'load', timeout: 5000});
+    await page.goto(INPUT_URL, {waitUntil: 'domcontentloaded', timeout: 15000}); //{waitUntil: 'load', timeout: 5000});
     
-    await paginate(page);
-    await paginate(page);
-    await paginate(page);
-
-    for (i = 3; i < 15; i++) {
+    for (i = 0; i < 13; i++) {
         try {
             let ret = await scrapePage(page);
             let singleResult = [];
@@ -109,7 +96,7 @@ async function init () {
             result.push('\n');
             result.push(ret);
             let csv = result.join();
-            fs.appendFileSync("data/output/perfectgame-export.csv", csv);
+            fs.appendFileSync(OUTPUT_FILE, csv);
             result = [];
             utils.wait(2000);
             await paginate(page);

@@ -2,10 +2,14 @@ const puppeteer = require('puppeteer');
 const fs = require("fs");
 const utils = require('../utils');
 
+let INPUT_FILE = 'data/output/perfectgame-step3.csv';
+let INPUT_URL = '';
+let OUTPUT_FILE = 'data/output/perfectgame-step4.csv';
+
 let csvRecords = [];
 
 async function readData() {
-  const readStream = fs.readFileSync('data/input/perfectgame-urls2.csv', {
+  const readStream = fs.readFileSync(INPUT_FILE, {
     encoding: 'utf8',
   });
   
@@ -92,7 +96,7 @@ async function init () {
 
             // write to the csv file
             let csv = result.join();
-            fs.appendFileSync("data/output/perfectgame-export.csv", csv);
+            fs.appendFileSync(OUTPUT_FILE, csv);
             result = [];
             utils.wait(2000);
         } catch(e) {
