@@ -21,39 +21,6 @@ async function readData() {
 
 let result = [];
 
-async function setUpPage(page, record) {
-
-}
-
-function findElem (parent, selector) {
-  /*let foundElements = [];
-  let outerElements = parent;
-
-    console.log(parent);
-    console.log(outerElements.length);
-    
-  
-    if (outerElements.length) {
-      for (let i = 0; i < outerElements.length; i++) {
-        let innerElements = outerElements[i].querySelectorAll(selector);
-        console.log(innerElements);
-        for (let j = 0; j < innerElements.length; j++) {
-            foundElements.push(innerElements[j]);
-        }
-      }    
-    } else {
-      let innerElements = outerElements.querySelectorAll(selector);
-      console.log(innerElements);
-      for (let j = 0; j < innerElements.length; j++) {
-        foundElements.push(innerElements[j]);
-      }
-    }
-    
-  return foundElements;*/
-
-  return 'i ama coold';
-}
-
 async function scrapePage(page, counter) {
   console.log('scraping page');
   console.log(findElem);
@@ -129,31 +96,35 @@ async function scrollToBottomOfPage(page) {
 
 async function init () {
     console.log('init');
-    //await readData();
-    console.log('warming up');
-    const browser = await puppeteer.launch({
-        headless: false,
-        devtools: true,
-        //slowMo: 100
-    });
-    console.log('spawned browser');
 
-    const page = await browser.newPage();
-    console.log('spawned new page');
-    await page.setViewport({
-      width: 2000,
-      height: 1000,
-      deviceScaleFactor: 1,
-    });
 
-    page.on('console', async (msg) => {
-        const msgArgs = msg.args();
-        for (let i = 0; i < msgArgs.length; ++i) {
-        console.log(await msgArgs[i].jsonValue());
-        }
-    });
+    //let i = 0;
+    for (i = 0; i < 10000; i++) {
+      const response = await fetch(`https://tournaments.prepbaseballreport.com/ajax-events?page=${i}&layout=full&past_events=false&events_exits=310`);
+      const data = await response.json();
+      console.log(data.eventlist);
+      
+      let results = [];
+      data.eventlist.forEach((event) => {
+        results.push(i);
+        results.push(',');
+        results.push(event.id);
+        results.push(',');
+        results.push(event.label);
+        results.push(',');
+        results.push(event.city);
+        results.push(',');
+        results.push(event.state); 
+        results.push(',');
+        results.push(event.url_key);
+        results.push('\n');
+      });
 
-    await page.goto(INPUT_URL, {waitUntil: 'domcontentloaded', timeout: 15000}); //{waitUntil: 'load', timeout: 5000});
+      let csv = results.join();
+      fs.appendFileSync(OUTPUT_FILE, csv);
+    }
+
+    /*await page.goto(INPUT_URL, {waitUntil: 'domcontentloaded', timeout: 15000}); //{waitUntil: 'load', timeout: 5000});
     await page.waitForSelector('#eventslist', {timeout: 5000});
     console.log('loaded page');
     await page.evaluate(() => {
@@ -179,10 +150,10 @@ async function init () {
         }
     }
     await page.close();
-    await browser.close();
+    await browser.close();*/
 }
 
-exports.prepbaseballreportUrls = async (req, res, next) => {
+exports.prepbaseballreportUrlsAPI = async (req, res, next) => {
     try {
         console.log('perfectgameUrls');
         await init();

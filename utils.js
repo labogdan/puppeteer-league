@@ -14,7 +14,7 @@ exports.getParameterByName = (name, url) => {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
-exports.find = (parent, selector) => {
+exports.findWithSelectors = (parent, selector) => {
   let foundElements = [];
   let outerElements = document.querySelectorAll(parent);
 
@@ -25,6 +25,33 @@ exports.find = (parent, selector) => {
       }
   }
 
+  return foundElements;
+}
+
+exports.find = (parent, selector) => {
+  let foundElements = [];
+  let outerElements = parent;
+
+    console.log(parent);
+    console.log(outerElements.length);
+    
+  
+    if (outerElements.length) {
+      for (let i = 0; i < outerElements.length; i++) {
+        let innerElements = outerElements[i].querySelectorAll(selector);
+        console.log(innerElements);
+        for (let j = 0; j < innerElements.length; j++) {
+            foundElements.push(innerElements[j]);
+        }
+      }    
+    } else {
+      let innerElements = outerElements.querySelectorAll(selector);
+      console.log(innerElements);
+      for (let j = 0; j < innerElements.length; j++) {
+        foundElements.push(innerElements[j]);
+      }
+    }
+    
   return foundElements;
 }
 
