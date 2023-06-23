@@ -38,7 +38,7 @@ async function init () {
     console.log('init');
     console.log('warming up');
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         devtools: true,
         slowMo: 200
     });
