@@ -12,6 +12,8 @@ const prepbaseballreportSocial = require('./controllers/prepbaseballreport-socia
 const washingtonyouthsoccer = require('./controllers/washingtonyouthsoccer');
 const azsoccerassociation = require('./controllers/azsoccerassociation');
 const calsouth = require('./controllers/calsouth');
+const selectbaseballteamsUrls = require('./controllers/selectbaseballteams-urls');
+const selectbaseballteamsUrlsRankings = require('./controllers/selectbaseballteams-urls-rankings');
 
 const router = express.Router();
 
@@ -27,5 +29,7 @@ router.get('/prepbaseballreport-social', prepbaseballreportSocial.prepbaseballre
 router.get('/washingtonyouthsoccer', washingtonyouthsoccer.washingtonyouthsoccer);
 router.get('/azsoccerassociation', azsoccerassociation.azsoccerassociation);
 router.get('/calsouth', calsouth.calsouth);
+router.get('/selectbaseballteams-urls', selectbaseballteamsUrls.selectbaseballteamsUrls);
+router.get('/selectbaseballteams-urls-rankings', selectbaseballteamsUrlsRankings.selectbaseballteamsUrlsRankings);
 
 module.exports = router;

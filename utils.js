@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 exports.wait = (val) => {
     return new Promise(resolve => setTimeout(resolve, val));
 };
@@ -54,6 +56,21 @@ exports.find = (parent, selector) => {
     
   return foundElements;
 }
+
+exports.readData = async (INPUT_FILE) => {
+  let csvRecords = [];
+  const readStream = fs.readFileSync(INPUT_FILE, {
+    encoding: 'utf8',
+  });
+  
+  csvRecords.push(
+    readStream.split(/\r?\n/).map((line) => {
+        return line.split(',');
+    })
+  );
+  return csvRecords;
+}
+
 
 
 module.exports = exports;
