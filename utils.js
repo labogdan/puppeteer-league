@@ -71,6 +71,24 @@ exports.readData = async (INPUT_FILE) => {
   return csvRecords;
 }
 
+// iterate through an array selecting each value at random until the array is empty
+// return the selected values in an array
+exports.selectRandomValuesFromArray = (arr, num) => {
+  let retVal = [];
+  let arrCopy = arr.slice();
+  for (let i = 0; i < num; i++) {
+    let index = Math.floor(Math.random() * arrCopy.length);
+    retVal.push(arrCopy[index]);
+    arrCopy.splice(index, 1);
+  }
+  return retVal;
+}
+
+exports.dontSelectRandomValuesFromArray = (arr, num) => {
+  return arr;
+}
+
+
 
 
 module.exports = exports;
