@@ -15,6 +15,7 @@ const calsouth = require('./controllers/calsouth');
 const selectbaseballteamsUrls = require('./controllers/selectbaseballteams-urls');
 const selectbaseballteamsUrlsRankings = require('./controllers/selectbaseballteams-urls-rankings');
 const selectbaseballteamsUrlsTeams = require('./controllers/selectbaseballteams-urls-teams');
+const selectbaseballteamsFinalData = require('./controllers/selectbaseballteams-final-data');
 
 const router = express.Router();
 
@@ -33,5 +34,6 @@ router.get('/calsouth', calsouth.calsouth);
 router.get('/selectbaseballteams-urls', selectbaseballteamsUrls.selectbaseballteamsUrls);
 router.get('/selectbaseballteams-urls-rankings', selectbaseballteamsUrlsRankings.selectbaseballteamsUrlsRankings);
 router.get('/selectbaseballteams-urls-teams', selectbaseballteamsUrlsTeams.selectbaseballteamsUrlsTeams);
+router.get('/selectbaseballteams-final-data', selectbaseballteamsFinalData.selectbaseballteamsFinalData);
 
 module.exports = router;
