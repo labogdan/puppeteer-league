@@ -16,6 +16,7 @@ const selectbaseballteamsUrls = require('./controllers/selectbaseballteams-urls'
 const selectbaseballteamsUrlsRankings = require('./controllers/selectbaseballteams-urls-rankings');
 const selectbaseballteamsUrlsTeams = require('./controllers/selectbaseballteams-urls-teams');
 const selectbaseballteamsFinalData = require('./controllers/selectbaseballteams-final-data');
+const ntxsoccerUrls = require('./controllers/ntxsoccer-urls');
 
 const router = express.Router();
 
@@ -35,5 +36,6 @@ router.get('/selectbaseballteams-urls', selectbaseballteamsUrls.selectbaseballte
 router.get('/selectbaseballteams-urls-rankings', selectbaseballteamsUrlsRankings.selectbaseballteamsUrlsRankings);
 router.get('/selectbaseballteams-urls-teams', selectbaseballteamsUrlsTeams.selectbaseballteamsUrlsTeams);
 router.get('/selectbaseballteams-final-data', selectbaseballteamsFinalData.selectbaseballteamsFinalData);
+router.get('/ntxsoccer-urls', ntxsoccerUrls.ntxsoccerUrls);
 
 module.exports = router;
