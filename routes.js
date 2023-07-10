@@ -17,6 +17,9 @@ const selectbaseballteamsUrlsRankings = require('./controllers/selectbaseballtea
 const selectbaseballteamsUrlsTeams = require('./controllers/selectbaseballteams-urls-teams');
 const selectbaseballteamsFinalData = require('./controllers/selectbaseballteams-final-data');
 const ntxsoccerUrls = require('./controllers/ntxsoccer-urls');
+const perfectgameRankingsUrls = require('./controllers/perfectgame-rankings-urls');
+const perfectgameRankingsOrg = require('./controllers/perfectgame-rankings-org');
+const perfectgameRankingsFinal = require('./controllers/perfectgame-rankings-final');
 
 const router = express.Router();
 
@@ -37,5 +40,8 @@ router.get('/selectbaseballteams-urls-rankings', selectbaseballteamsUrlsRankings
 router.get('/selectbaseballteams-urls-teams', selectbaseballteamsUrlsTeams.selectbaseballteamsUrlsTeams);
 router.get('/selectbaseballteams-final-data', selectbaseballteamsFinalData.selectbaseballteamsFinalData);
 router.get('/ntxsoccer-urls', ntxsoccerUrls.ntxsoccerUrls);
+router.get('/perfectgame-rankings-urls', perfectgameRankingsUrls.perfectgameRankingsUrls);
+router.get('/perfectgame-rankings-org', perfectgameRankingsOrg.perfectgameRankingsOrg);
+router.get('/perfectgame-rankings-final', perfectgameRankingsFinal.perfectgameRankingsFinal);
 
 module.exports = router;
