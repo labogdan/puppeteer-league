@@ -20,6 +20,8 @@ const ntxsoccerUrls = require('./controllers/ntxsoccer-urls');
 const perfectgameRankingsUrls = require('./controllers/perfectgame-rankings-urls');
 const perfectgameRankingsOrg = require('./controllers/perfectgame-rankings-org');
 const perfectgameRankingsFinal = require('./controllers/perfectgame-rankings-final');
+const coloradosoccer = require('./controllers/coloradosoccer');
+const nmysa = require('./controllers/nmysa');
 
 const router = express.Router();
 
@@ -43,5 +45,7 @@ router.get('/ntxsoccer-urls', ntxsoccerUrls.ntxsoccerUrls);
 router.get('/perfectgame-rankings-urls', perfectgameRankingsUrls.perfectgameRankingsUrls);
 router.get('/perfectgame-rankings-org', perfectgameRankingsOrg.perfectgameRankingsOrg);
 router.get('/perfectgame-rankings-final', perfectgameRankingsFinal.perfectgameRankingsFinal);
+router.get('/coloradosoccer', coloradosoccer.coloradosoccer);
+router.get('/nmysa', nmysa.nmysa);
 
 module.exports = router;
