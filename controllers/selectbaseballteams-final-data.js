@@ -32,6 +32,10 @@ async function scrapePage(page, csv) {
     returnValue.push(elem.querySelector('.field.field-name-field-facilities .field-items') ? elem.querySelector('.field.field-name-field-facilities .field-items').innerText.replace('\n', ',') : '');
     returnValue.push(',');
     returnValue.push(elem.querySelector('.field.field-name-field-paid-coaches .field-items') ? elem.querySelector('.field.field-name-field-paid-coaches .field-items').innerText : '');
+    returnValue.push(',');
+    returnValue.push(elem.querySelector('.location.vcard') ? elem.querySelector('.location.vcard').innerText.replace('\n',',') : '');
+    returnValue.push(',');
+    returnValue.push(elem.querySelector('.field.field-name-field-season-costs .field-items') ? elem.querySelector('.field.field-name-field-season-costs .field-items').innerText : '');
     returnValue.push('\n');
     
     return returnValue;
