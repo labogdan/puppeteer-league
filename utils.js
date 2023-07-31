@@ -88,6 +88,9 @@ exports.dontSelectRandomValuesFromArray = (arr, num) => {
   return arr;
 }
 
+exports.removeWhitespaceAndNewlines = (input) => {
+  return input.replace(/\s/g, "");
+}
 
 
 
