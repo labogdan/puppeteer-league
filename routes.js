@@ -27,6 +27,7 @@ const exposureEventsUrls = require('./controllers/exposureevents-urls');
 const exposureEventsFinal = require('./controllers/exposureevents-final');
 const idahoyouthsoccer = require('./controllers/idahoyouthsoccer');
 const southdakotasoccer = require('./controllers/southdakotasoccer');
+const utahyouthsoccer = require('./controllers/utahyouthsoccer');
 
 const router = express.Router();
 
@@ -57,5 +58,6 @@ router.get('/exposureevents-urls', exposureEventsUrls.exposureEventsUrls);
 router.get('/exposureevents-final', exposureEventsFinal.exposureEventsFinal);
 router.get('/idahoyouthsoccer', idahoyouthsoccer.idahoyouthsoccer);
 router.get('/southdakotasoccer', southdakotasoccer.southdakotasoccer);
+router.get('/utahyouthsoccer', utahyouthsoccer.utahyouthsoccer);
 
 module.exports = router;
