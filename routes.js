@@ -28,6 +28,10 @@ const exposureEventsFinal = require('./controllers/exposureevents-final');
 const idahoyouthsoccer = require('./controllers/idahoyouthsoccer');
 const southdakotasoccer = require('./controllers/southdakotasoccer');
 const utahyouthsoccer = require('./controllers/utahyouthsoccer');
+const montanayouthsoccer = require('./controllers/montanayouthsoccer');
+const wyomingsoccer = require('./controllers/wyomingsoccer');
+const hawaiisoccer = require('./controllers/hawaiisoccer');
+const alaskayouthsoccer = require('./controllers/alaskayouthsoccer');
 
 const router = express.Router();
 
@@ -59,5 +63,9 @@ router.get('/exposureevents-final', exposureEventsFinal.exposureEventsFinal);
 router.get('/idahoyouthsoccer', idahoyouthsoccer.idahoyouthsoccer);
 router.get('/southdakotasoccer', southdakotasoccer.southdakotasoccer);
 router.get('/utahyouthsoccer', utahyouthsoccer.utahyouthsoccer);
+router.get('/montanayouthsoccer', montanayouthsoccer.montanayouthsoccer);
+router.get('/wyomingsoccer', wyomingsoccer.wyomingsoccer);
+router.get('/hawaiisoccer', hawaiisoccer.hawaiisoccer);
+router.get('/alaskayouthsoccer', alaskayouthsoccer.alaskayouthsoccer);
 
 module.exports = router;
