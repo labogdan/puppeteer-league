@@ -32,6 +32,8 @@ const montanayouthsoccer = require('./controllers/montanayouthsoccer');
 const wyomingsoccer = require('./controllers/wyomingsoccer');
 const hawaiisoccer = require('./controllers/hawaiisoccer');
 const alaskayouthsoccer = require('./controllers/alaskayouthsoccer');
+const nebraskastatesoccer = require('./controllers/nebraskastatesoccer');
+const kansasyouthsoccer = require('./controllers/kansasyouthsoccer');
 
 const router = express.Router();
 
@@ -67,5 +69,7 @@ router.get('/montanayouthsoccer', montanayouthsoccer.montanayouthsoccer);
 router.get('/wyomingsoccer', wyomingsoccer.wyomingsoccer);
 router.get('/hawaiisoccer', hawaiisoccer.hawaiisoccer);
 router.get('/alaskayouthsoccer', alaskayouthsoccer.alaskayouthsoccer);
+router.get('/nebraskastatesoccer', nebraskastatesoccer.nebraskastatesoccer);
+router.get('/kansasyouthsoccer', kansasyouthsoccer.kansasyouthsoccer);
 
 module.exports = router;
