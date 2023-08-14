@@ -6,6 +6,7 @@ const puppeteer = require('puppeteer');
 const fs = require("fs");
 
 const apiRoutes = require('./routes');
+const webRoutes = require('./webroutes');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
