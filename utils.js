@@ -1,4 +1,3 @@
-const fs = require("fs");
 
 exports.wait = (val) => {
     return new Promise(resolve => setTimeout(resolve, val));
@@ -91,7 +90,5 @@ exports.dontSelectRandomValuesFromArray = (arr, num) => {
 exports.removeWhitespaceAndNewlines = (input) => {
   return input.replace(/\s/g, "");
 }
-
-
 
 module.exports = exports;

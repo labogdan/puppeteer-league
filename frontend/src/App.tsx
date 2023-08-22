@@ -2,13 +2,13 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Header from './header';
-import ScrapeModule from './scrapeModule';
+import ScrapeWithButton from './components/lousianaSoccer';
 
 function App() {
   return (
     <>
       <Header />
-      <ScrapeModule />
+      <ScrapeWithButton />
     </>
   );
 }
