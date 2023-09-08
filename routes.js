@@ -36,6 +36,10 @@ const nebraskastatesoccer = require('./controllers/nebraskastatesoccer');
 const kansasyouthsoccer = require('./controllers/kansasyouthsoccer');
 const stxsoccer = require('./controllers/stxsoccer');
 const playlouisianasoccer = require('./controllers/playlouisianasoccer');
+const alabamaSoccer = require('./controllers/alabamasoccer');
+const marylandyouthsoccer = require('./controllers/marylandyouthsoccer');
+const marylandyouthsoccerclubs = require('./controllers/marylandyouthsoccer-clubs');
+const mnyouthsoccer = require('./controllers/mnyouthsoccer');
 
 const router = express.Router();
 
@@ -75,5 +79,9 @@ router.get('/nebraskastatesoccer', nebraskastatesoccer.nebraskastatesoccer);
 router.get('/kansasyouthsoccer', kansasyouthsoccer.kansasyouthsoccer);
 router.get('/stxsoccer', stxsoccer.stxsoccer);
 router.get('/playlouisianasoccer', playlouisianasoccer.playlouisianasoccer);
+router.get('/alabamasoccer', alabamaSoccer.alabamaSoccer);
+router.get('/marylandyouthsoccer', marylandyouthsoccer.marylandyouthsoccer);
+router.get('/marylandyouthsoccer-clubs', marylandyouthsoccerclubs.marylandyouthsoccerclubs);
+router.get('/mnyouthsoccer', mnyouthsoccer.mnyouthsoccer);
 
 module.exports = router;

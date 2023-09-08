@@ -1,3 +1,4 @@
+const fs = require("fs");
 
 exports.wait = (val) => {
     return new Promise(resolve => setTimeout(resolve, val));
