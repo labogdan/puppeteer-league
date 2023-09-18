@@ -44,6 +44,16 @@ const arkansassoccer = require('./controllers/arkansassoccer');
 const arkansassoccerclubs = require('./controllers/arkansassoccer-clubs');
 const floridayouthsoccer = require('./controllers/floridayouthsoccer');
 const floridayouthsoccerclubs = require('./controllers/floridayouthsoccer-clubs');
+const iowasoccer = require('./controllers/iowasoccer');
+const iowasoccerclubs = require('./controllers/iowasoccer-clubs');
+const pawestsoccer = require('./controllers/pawestsoccer');
+const pawestsoccerclubs = require('./controllers/pawestsoccer-clubs');
+const mississippisoccer = require('./controllers/mississippisoccer');
+const mississippisoccerclubs = require('./controllers/mississippisoccer-clubs');
+const ncsoccer = require('./controllers/ncsoccer');
+const ncsoccerclubs = require('./controllers/ncsoccer-clubs');
+const nyswysa = require('./controllers/nyswysa');
+const nevadayouthsoccer = require('./controllers/nevadayouthsoccer');
 
 const router = express.Router();
 
@@ -91,5 +101,15 @@ router.get('/arkansassoccer', arkansassoccer.arkansassoccer);
 router.get('/arkansassoccer-clubs', arkansassoccerclubs.arkansassoccer);
 router.get('/floridayouthsoccer', floridayouthsoccer.floridayouthsoccer);
 router.get('/floridayouthsoccer-clubs', floridayouthsoccerclubs.floridayouthsoccer);
+router.get('/iowasoccer', iowasoccer.iowasoccer);
+router.get('/iowasoccer-clubs', iowasoccerclubs.iowasoccer);
+router.get('/pawestsoccer', pawestsoccer.pawestsoccer);
+router.get('/pawestsoccer-clubs', pawestsoccerclubs.pawestsoccer);
+router.get('/mississippisoccer', mississippisoccer.mississippisoccer);
+router.get('/mississippisoccer-clubs', mississippisoccerclubs.mississippisoccer);
+router.get('/ncsoccer', ncsoccer.ncsoccer);
+router.get('/ncsoccer-clubs', ncsoccerclubs.ncsoccer);
+router.get('/nyswysa', nyswysa.nyswysa);
+router.get('/nevadayouthsoccer', nevadayouthsoccer.nevadayouthsoccer);
 
 module.exports = router;
