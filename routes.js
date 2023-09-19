@@ -54,6 +54,7 @@ const ncsoccer = require('./controllers/ncsoccer');
 const ncsoccerclubs = require('./controllers/ncsoccer-clubs');
 const nyswysa = require('./controllers/nyswysa');
 const nevadayouthsoccer = require('./controllers/nevadayouthsoccer');
+const tnsoccer = require('./controllers/tnsoccer');
 
 const router = express.Router();
 
@@ -111,5 +112,6 @@ router.get('/ncsoccer', ncsoccer.ncsoccer);
 router.get('/ncsoccer-clubs', ncsoccerclubs.ncsoccer);
 router.get('/nyswysa', nyswysa.nyswysa);
 router.get('/nevadayouthsoccer', nevadayouthsoccer.nevadayouthsoccer);
+router.get('/tnsoccer', tnsoccer.tnsoccer);
 
 module.exports = router;
