@@ -55,6 +55,19 @@ const ncsoccerclubs = require('./controllers/ncsoccer-clubs');
 const nyswysa = require('./controllers/nyswysa');
 const nevadayouthsoccer = require('./controllers/nevadayouthsoccer');
 const tnsoccer = require('./controllers/tnsoccer');
+const soccerri = require('./controllers/soccerri');
+const soccermaine = require('./controllers/soccermaine');
+const scyouthsoccer = require('./controllers/scyouthsoccer');
+const ohiosoccer = require('./controllers/ohiosoccer');
+const calnorth = require('./controllers/calnorth');
+const soccerindiana = require('./controllers/soccerindiana');
+const missourisoccer = require('./controllers/missourisoccer');
+const wiyouthsoccer = require('./controllers/wiyouthsoccer-urls');
+const wiyouthsoccerdata = require('./controllers/wiyouthsoccer-data');
+const ecnlboys = require('./controllers/ecnlboys');
+const girlsacademyleague = require('./controllers/girlsacademyleague');
+const mlssoccer = require('./controllers/mlssoccer');
+const usysnationalleague = require('./controllers/usysnationalleague');
 
 const router = express.Router();
 
@@ -113,5 +126,18 @@ router.get('/ncsoccer-clubs', ncsoccerclubs.ncsoccer);
 router.get('/nyswysa', nyswysa.nyswysa);
 router.get('/nevadayouthsoccer', nevadayouthsoccer.nevadayouthsoccer);
 router.get('/tnsoccer', tnsoccer.tnsoccer);
+router.get('/soccerri', soccerri.soccerri);
+router.get('/soccermaine', soccermaine.soccermaine);
+router.get('/scyouthsoccer', scyouthsoccer.scyouthsoccer);
+router.get('/ohiosoccer', ohiosoccer.ohiosoccer);
+router.get('/calnorth', calnorth.calnorth);
+router.get('/soccerindiana', soccerindiana.soccerindiana);
+router.get('/missourisoccer', missourisoccer.missourisoccer);
+router.get('/wiyouthsoccer-urls', wiyouthsoccer.wiyouthsoccer);
+router.get('/wiyouthsoccer-data', wiyouthsoccerdata.wiyouthsoccer);
+router.get('/ecnlboys', ecnlboys.ecnlboys);
+router.get('/girlsacademyleague', girlsacademyleague.girlsacademyleague);
+router.get('/mlssoccer', mlssoccer.mlssoccer);
+router.get('/usysnationalleague', usysnationalleague.usysnationalleague);
 
 module.exports = router;

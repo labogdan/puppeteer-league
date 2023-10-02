@@ -3,8 +3,8 @@ const fs = require("fs");
 const utils = require('../utils');
 
 let INPUT_FILE = '';
-let INPUT_URL = 'https://www.montanayouthsoccer.com/about/member-clubs/';
-let OUTPUT_FILE = 'data/output/montanayouthsoccer-urls.csv';
+let INPUT_URL = 'https://www.soccerindiana.org/find-a-club/';
+let OUTPUT_FILE = 'data/output/soccerindiana-urls.csv';
 // let csvRecords = [83209, 83814, 83616];
 
 function wait(val) {
@@ -16,47 +16,30 @@ let result = [];
 async function scrapePage(page) {
   console.log('scraping page');
 
-  await page.waitForSelector('main.content', {timeout: 15000});
+  await page.waitForSelector('.wp-block-genesis-blocks-gb-columns.gb-layout-columns-2.gb-2-col-equal', {timeout: 15000});
   console.log('found results');
 
   let retVal = await page.evaluate( async (record) => {
     let returnValue = [''];
 
-    let elems = document.querySelectorAll('main.content table tr');
-    
+    let elems = document.querySelectorAll('.wp-block-genesis-blocks-gb-columns.gb-layout-columns-2.gb-2-col-equal');
+
     elems.forEach((elem) => {
-        let rows = elem.querySelectorAll('td');
-        let name = rows[0]?.querySelector('a')?.innerText;
-        let url = rows[0]?.querySelector('a')?.href;
-        let city = rows[1]?.innerText;
-    
-        returnValue.push(name);
-        returnValue.push(',');
-        returnValue.push(url);
-        returnValue.push(',');
-        returnValue.push(city);
-        returnValue.push('\n');
-    });
-    
-
-    // this is old code - I think the site was redesigned
-    /*let elements = document.querySelectorAll('.site-section.main .data-table tbody tr');
-    elements.forEach( (element) => {
-        let name = '';
-        let href = '';
-        let city = '';
-
-        name = element.querySelector('td a')?.innerText;
-        href = element.querySelector('td a')?.href;
-        city = element.querySelectorAll('td')[1]?.innerText;
+        let rows = elem.querySelectorAll('.gb-block-accordion table tr')
         
-        returnValue.push(name);
-        returnValue.push(',');
-        returnValue.push(href);
-        returnValue.push(',');
-        returnValue.push(city);
-        returnValue.push('\n');
-    });*/
+        rows.forEach((data) => {
+            let name = data.querySelector('a')?.innerHTML;
+            let url = data.querySelector('a')?.href;
+            let city = data.querySelectorAll('td')[2]?.innerHTML;
+            
+            returnValue.push(name);
+            returnValue.push(',');
+            returnValue.push(url);
+            returnValue.push(',');
+            returnValue.push(city);
+            returnValue.push('\n');    
+        });
+    });
     
     return returnValue;
   });
@@ -101,9 +84,9 @@ async function init () {
     await browser.close();
 }
 
-exports.montanayouthsoccer = async (req, res, next) => {
+exports.soccerindiana = async (req, res, next) => {
     try {
-        console.log('perfectgameUrls');
+        console.log('soccerindiana');
         await init();
         res.send({msg: 'ok'});
       } catch (error) {
