@@ -27,7 +27,7 @@ async function scrapePage(page) {
       let name = element.querySelector('.c-members__club .c-members__club-name')?.innerText || '';
       let location = element.querySelector('.c-members__club .c-members__club-location')?.innerText || '';
     
-      let league = element.querySelector('.c-members__league .c-members__league-list')?.innerText || '';
+      let league = element.querySelector('.c-members__league .c-members__league-list')?.innerText.replaceAll('\n', ' ').replaceAll(',', ' ') || '';
       let website = element.querySelector('.c-members__social .c-members__social-item .c-members__social-site')?.href || '';
       let fb = element.querySelector('.c-members__social .c-members__social-item .c-members__social-facebook')?.href || '';
       let x = element.querySelector('.c-members__social .c-members__social-item .c-members__social-twitter')?.href || '';
