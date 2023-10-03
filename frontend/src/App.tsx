@@ -8,23 +8,17 @@ import ScrapeWithButton from './components/googleMapFormScrape';
 function App() {
   return (
     <>
+    <Header />
       <Router>
         <Routes>
-          <Route path="/" element={<Header />}>
-            <Route index element={<Index />} />
-            <Route path="soccerScrape" element={
+          <Route path="soccerScrape" element={
               <ScrapeWithButton 
                 scrapeName="playlouisianasoccer"
                 title="Louisiana Soccer" 
-              />} 
-            />
+              /> }>
           </Route>
         </Routes>
       </Router>
-      <ScrapeWithButton
-        scrapeName="playlouisianasoccer"
-        title="Louisiana Soccer"
-       />
     </>
   );
 }
