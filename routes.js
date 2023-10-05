@@ -68,6 +68,7 @@ const ecnlboys = require('./controllers/ecnlboys');
 const girlsacademyleague = require('./controllers/girlsacademyleague');
 const mlssoccer = require('./controllers/mlssoccer');
 const usysnationalleague = require('./controllers/usysnationalleague');
+const kysoccer = require('./controllers/kysoccer');
 
 const router = express.Router();
 
@@ -139,5 +140,6 @@ router.get('/ecnlboys', ecnlboys.ecnlboys);
 router.get('/girlsacademyleague', girlsacademyleague.girlsacademyleague);
 router.get('/mlssoccer', mlssoccer.mlssoccer);
 router.get('/usysnationalleague', usysnationalleague.usysnationalleague);
+router.get('/kysoccer', kysoccer.kysoccer);
 
 module.exports = router;
