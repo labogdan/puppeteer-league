@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DownloadButton from './downloadButton';
+import DeleteButton from './deleteButton';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,24 +19,27 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
   const [response, setResponse] = useState([]);
   const [socket, setSocket] = useState(null);
   const [numbers, setNumbers] = useState(['']);
-  const [progress, setProgress] = useState(0);  
+  const [progress, setProgress] = useState(0);
+  const [fileExists, setFileExists] = useState(false);
 
-  const handleNumberChange = (index:number, value:string) => {
-    const newNumbers = [...numbers];
-    newNumbers[index] = value;
-    setNumbers(newNumbers);
-  };
+  async function checkFileExists() {
+    try {
+      const response = await fetch(`/check-file-exists?filename=${scrapeName + "-urls.csv"}`);
+      const data = await response.json();
+      setFileExists(data.exists);
+    } catch (error) {
+      console.error('Error checking file existence:', error);
+    }
+  }
 
-  const handleAddNumber = () => {
-    setNumbers([...numbers, '']);
-  };
-
-  const handleRemoveNumber = (index:number) => {
-    const newNumbers = numbers.filter((_, i) => i !== index);
-    setNumbers(newNumbers);
-  };
+  async function resetAll() {
+    setProgress(0);
+    setResponse([]);
+  }
 
   useEffect(() => {
+    
+    checkFileExists();
     const newSocket = new WebSocket('ws://localhost:8080');
     newSocket.onopen = () => {
       console.log('WebSocket connection opened');
@@ -47,6 +51,9 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
       if (event.data.includes('percentComplete')) {
         let percentage = event.data.split(':')[1];
         setProgress(percentage);
+        if (percentage === '100') {
+          checkFileExists();
+        }
       } else {
         // @ts-ignore
         setResponse(prevUpdates => [...prevUpdates, event.data]);
@@ -80,28 +87,10 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
       <div style={{ maxWidth: '900px', margin: '10px auto'}}></div>
         <Row className="mb-3">
           <Col xs={6}>
-          {numbers.map((number, index) => (
-          <Row key={index} className="mb-3">
-            <Col xs={9}>
-              <Form.Control
-                type="number"
-                value={number}
-                onChange={(e) => handleNumberChange(index, e.target.value)}
-              />
-            </Col>
-            <Col xs={3}>
-              <Button variant="outline-danger" onClick={() => handleRemoveNumber(index)}>
-                Remove
-              </Button>
-            </Col>
-          </Row>
-        ))}
         <Row>
-          <Col xs={9}>
-            <Button variant="outline-primary" onClick={handleAddNumber}>Add Number</Button>
-          </Col>
+          
           <Col xs={3}>
-            <Button onClick={() => sendMessage(`${scrapeName}:${numbers}`)} variant="primary">Scrape</Button>
+            <Button onClick={() => {sendMessage(`${scrapeName}:${numbers}`); resetAll()}} variant="primary">Scrape</Button>
           </Col>
         </Row>
           </Col>
@@ -109,13 +98,14 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
             <Stack gap={3}>
               <h5>Response: </h5>
               {response && response.map((item:string, index) => {
-                return <div className={item.indexOf('Scrape Complete!') !== -1 ? 'p-2 bg-success text-light border': 'p-2 bg-light border' } key={index}>{item}</div>
+                return <div className={item.indexOf('Scrape Complete!') !== -1 ? 'p-2 bg-success': 'p-2 border' } key={index}>{item}</div>
               })}
             </Stack>
           </Col>
         </Row>
         
-      
+      <DownloadButton filename={scrapeName + "-urls.csv"} text="Download CSV" fileExists={fileExists} />
+      <DeleteButton filename={scrapeName + "-urls.csv"} text="Delete CSV" fileExists={fileExists} deleteSuccess={checkFileExists} />
     </div>
     </Container>
   );

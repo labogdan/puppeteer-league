@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { playlouisianasoccer } = require("./controllers/playlouisianasoccer");
+const { alaskayouthsoccer } = require("./controllers/alaskayouthsoccer");
 
 exports.socketIO = (socket) => {
   socket.on('message', (message) => {
@@ -12,7 +13,12 @@ exports.socketIO = (socket) => {
         case 'playlousianasoccer':
           console.log('playlousianasoccer');
           playlouisianasoccer(socket, message.toString().split(':')[1]);
-          break;
+        break;
+        case 'alaskayouthsoccer':
+          console.log('alaskayouthsoccer');
+          alaskayouthsoccer(socket);
+        break;
+
         default:
           socket.send('I did not understand what you said');
     }

@@ -1,3 +1,25 @@
+/*const express = require('express');
+const app = express();
+const path = require('path');
+const port = process.env.PORT || 3001;
+
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'This is data from the backend' });
+});
+
+app.use(express.static(path.join(__dirname, './frontend/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './frontend/build', 'index.html'));
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+*/
+
+
+
 const express = require("express");
 
 const http = require('http');
@@ -16,19 +38,30 @@ wss.on('connection', (socket) => {
 
 const apiRoutes = require('./routes');
 
+app.use('/api', apiRoutes);
+
 app.get('/download', (req, res) => {
     fileUtils.downloadFile(req, res);
-  });
+});
+
+app.get('/delete', (req, res) => {
+  fileUtils.deleteFile(req, res);
+});
 
 app.get('/check-file-exists', (req, res) => {
   fileUtils.checkFileExists(req, res);
 });
 
-app.use(express.static(__dirname + '/frontend/build'));
-app.use('/api', apiRoutes);
+app.use(express.static(path.join(__dirname, './frontend/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './frontend/build', 'index.html'));
+});
+
+
 
 server.listen(8080, () => {
-  console.log('WebSocket server is running on port 8080');
+  console.log('WebSocket server is running on port 8080'); 
 });
 
 

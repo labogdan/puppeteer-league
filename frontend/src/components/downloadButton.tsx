@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Button from "react-bootstrap/Button";
 
-const DownloadButton = (props:any) => {
-    const [fileExists, setFileExists] = useState(false);
-    const {filename, text} = props;
+interface Props {
+  filename: string;
+  text: string;
+  fileExists: boolean;
+}
+
+const DownloadButton = ({ filename, text, fileExists }: Props) => {
     
     const downloadFile = () => {
         const link = document.createElement('a');
@@ -13,20 +17,6 @@ const DownloadButton = (props:any) => {
         link.click();
         document.body.removeChild(link);
     }
-
-    useEffect(() => {
-        async function checkFileExists() {
-          try {
-            const response = await fetch(`/check-file-exists?filename=${filename}`);
-            const data = await response.json();
-            setFileExists(data.exists);
-          } catch (error) {
-            console.error('Error checking file existence:', error);
-          }
-        }
-        
-        checkFileExists();
-      }, [filename]);
 
     return (
         <>
