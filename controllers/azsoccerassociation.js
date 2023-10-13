@@ -1,37 +1,56 @@
 const puppeteer = require('puppeteer');
 const fs = require("fs");
 const utils = require('../utils');
+const { error } = require('console');
 
 let INPUT_FILE = '';
 let INPUT_URL = 'https://www.azsoccerassociation.org/about/member-clubs/';
-let OUTPUT_FILE = 'data/output/azsoccerassociation.csv';
+let OUTPUT_FILE = 'data/output/azsoccerassociation-urls.csv';
 let csvRecords = [];
 
 let result = [];
 
-async function scrapePage(page) {
+async function scrapePage(page, socket) {
   console.log('scraping page');
+  socket.send(`percentComplete:${30}`);
+  socket.send(`scraping page`);
 
-  await page.waitForSelector('#accordion', {timeout: 5000});
-  let retVal = await page.evaluate(() => {    
-    let returnValue = [''];
-    
-    document.querySelectorAll('.responsive-table td').forEach((item) => {
-      returnValue.push(item.querySelector('a') ? item.querySelector('a').innerText : '');
-      returnValue.push(',');
-      returnValue.push(item.querySelector('a') ? item.querySelector('a').href : '');
-      returnValue.push(',');
-      returnValue.push(item.querySelectorAll('strong')[1] ? item.querySelectorAll('strong')[1].innerText.replace(/[\r\n\s]+/g, "") : '');
-      returnValue.push('\n');
+  try {
+    await page.waitForSelector('main.content', {timeout: 5000});
+    let retVal = await page.evaluate(() => {    
+      let returnValue = [''];
+
+      let elements = document.querySelectorAll('main.content .ghostkit-col-content');
+      
+      elements.forEach((element) => {
+        let title = element.querySelector('figcaption a')?.innerHTML || '';
+        let url = element.querySelector('figcaption a')?.href || '';
+                
+        returnValue.push(title);
+        returnValue.push(url);
+        returnValue.push('\n');
+      });
+      
+  
+      return returnValue;
     });
-
-    return returnValue;
-  });
-  console.log(retVal);
+    socket.send(`percentComplete:${80}`);
+    console.log(retVal);
   return retVal;
+  } catch(e) {
+    console.error(e);
+    //socket.send('error');
+    return new Promise((resolve, reject) => {
+      reject(e);
+    }
+    );
+  }
+  //await page.waitForSelector('#accordion', {timeout: 5000});
+  
+  
 }
 
-async function init () {
+async function init (socket) {
     console.log('init');
     console.log('warming up');
     const browser = await puppeteer.launch({
@@ -53,31 +72,36 @@ async function init () {
 
     await page.goto(INPUT_URL, {waitUntil: 'domcontentloaded', timeout: 15000});
     
-    try {
-        let ret = await scrapePage(page);
+//    try {
+        let ret = await scrapePage(page, socket);
         result.push(ret);
         let csv = result.join();
         fs.appendFileSync(OUTPUT_FILE, csv);
         result = [];
         utils.wait(2000);
         console.log('done');
-    } catch(e) {
-        console.error('there was an error');
-        console.error(e);
-    }
+    //} catch(e) {
+  //      console.error('there was an error');
+  //      console.error(e);
+  //      socket.send('error');
+    //}
 
     await page.close();
     await browser.close();
 }
 
-exports.azsoccerassociation = async (req, res, next) => {
+exports.azsoccerassociation = async (socket) => {
     try {
-        console.log('perfectgameUrls');
-        await init();
-        res.send({msg: 'ok'});
+        console.log('azsoccerassociation');
+        socket.send('inside soccer controller (azsoccerassociation)');
+        socket.send(`percentComplete:${10}`);
+        await init(socket);
+        socket.send('Scrape Complete!');
+        socket.send(`percentComplete:${100}`);
       } catch (error) {
         console.error('there was an error');
+        socket.send('error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        //res.status(500).send('Internal Server Error');
       }
 };

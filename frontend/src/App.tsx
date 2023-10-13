@@ -25,6 +25,12 @@ function App() {
                 title="Alaska Soccer" 
               /> }>
           </Route>
+          <Route path="azSoccer" element={
+              <SimpleScrape 
+                scrapeName="azsoccerassociation"
+                title="Arizona Soccer" 
+              /> }>
+          </Route>
           <Route path="/" element={
               <MainMenu/> 
             }>

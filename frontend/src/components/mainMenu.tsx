@@ -8,14 +8,8 @@ const MainMenu = () => {
 
   const stateLinks = [
     { name: 'Alaska', path: 'alaskaSoccer' },
-    { name: 'Alabama', path: 'california-soccer' },
-    { name: 'Arkansas', path: 'texas-soccer' },
-    { name: 'Arizona', path: 'new-york-soccer' },
-    { name: 'California (North)', path: 'florida-soccer' },
-    { name: 'California (South)', path: 'arizona-soccer' },
-    { name: 'Colorado', path: 'illinois-soccer' },
-    { name: 'ECNL Soccer', path: 'colorado-soccer' },
-    { name: 'Exposure Events', path: 'georgia-soccer' },
+    { name: 'Arizona', path: 'azSoccer' },
+
   ];
 
     return (

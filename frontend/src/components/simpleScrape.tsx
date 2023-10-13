@@ -21,6 +21,7 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
   const [numbers, setNumbers] = useState(['']);
   const [progress, setProgress] = useState(0);
   const [fileExists, setFileExists] = useState(false);
+  const [dynamicClass, setDynamicClass] = useState('p-2 border');
 
   async function checkFileExists() {
     try {
@@ -45,7 +46,7 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
       console.log('WebSocket connection opened');
     };
     newSocket.onmessage = (event) => {
-      console.log('WebSocket message received:', event);
+      console.log('WebSocket message received:', event.data);
       
       //event.data.text().then(txt=>setResponse(txt))
       if (event.data.includes('percentComplete')) {
@@ -53,7 +54,14 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
         setProgress(percentage);
         if (percentage === '100') {
           checkFileExists();
+          setDynamicClass('p-2 border bg-success text-white');
         }
+      } else if (event.data.includes('error')) {
+        setDynamicClass('p-2 border bg-danger text-white');
+        // @ts-ignore
+        setResponse(prevUpdates => [...prevUpdates, event.data]);
+        throw new Error(event.data);
+
       } else {
         // @ts-ignore
         setResponse(prevUpdates => [...prevUpdates, event.data]);
@@ -98,7 +106,9 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
             <Stack gap={3}>
               <h5>Response: </h5>
               {response && response.map((item:string, index) => {
-                return <div className={item.indexOf('Scrape Complete!') !== -1 ? 'p-2 bg-success': 'p-2 border' } key={index}>{item}</div>
+                return (
+                  <div className={item.indexOf('Scrape Complete!') !== -1 || item.indexOf('error') != -1 ? dynamicClass: 'p-2 border' } key={index}>{item}</div>
+                )
               })}
             </Stack>
           </Col>
