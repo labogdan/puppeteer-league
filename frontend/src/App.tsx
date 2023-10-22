@@ -31,6 +31,124 @@ function App() {
                 title="Arizona Soccer" 
               /> }>
           </Route>
+          <Route path="coloradoSoccer" element={
+              <SimpleScrape 
+                scrapeName="coloradosoccer"
+                title="Colorado Soccer" 
+              /> }>
+          </Route>
+          <Route path="ecnlSoccer" element={
+              <SimpleScrape 
+                scrapeName="ecnlboys"
+                title="ECNL Soccer" 
+              /> }>
+          </Route>
+          <Route path="girlsacademyleague" element={
+            <SimpleScrape
+            scrapeName='girlsacademyleague'
+            title='Girls Academy League'
+            />
+          }>
+          </Route>
+          <Route path="hawaiisoccer" element={
+            <SimpleScrape
+            scrapeName='hawaiisoccer'
+            title='Hawaii Soccer'
+            />
+          }>
+          </Route>
+          <Route path="kansasyouthsoccer" element={
+            <SimpleScrape
+            scrapeName='kansasyouthsoccer'
+            title='Kansas Soccer'
+            />
+          }>
+          </Route>
+          <Route path="kysoccer" element={
+            <SimpleScrape
+            scrapeName='kysoccer'
+            title='Kentucky Soccer'
+            />
+          }>
+          </Route>
+          <Route path="missourisoccer" element={
+            <SimpleScrape
+            scrapeName='missourisoccer'
+            title='Missouri Soccer'
+            />
+          }>
+          </Route>
+          <Route path="mlssoccer" element={
+            <SimpleScrape
+            scrapeName='mlssoccer'
+            title='MLS Next Soccer'
+            />
+          }>
+          </Route>
+          <Route path="mnyouthsoccer" element={
+            <SimpleScrape
+            scrapeName='mnyouthsoccer'
+            title='Minnesota Youth Soccer'
+            />
+          }>
+          </Route>
+          <Route path="montanayouthsoccer" element={
+            <SimpleScrape
+            scrapeName='montanayouthsoccer'
+            title='Montana Youth Soccer'
+            />
+          }>
+          </Route>
+          <Route path="nebraskastatesoccer" element={
+            <SimpleScrape
+            scrapeName='nebraskastatesoccer'
+            title='Nebraska State Soccer'
+            />
+          }>
+          </Route>
+          <Route path="nevadayouthsoccer" element={
+            <SimpleScrape
+            scrapeName='nevadayouthsoccer'
+            title='Nevada Youth Soccer'
+            />
+          }>
+          </Route>
+          <Route path="ntxsoccer" element={
+            <SimpleScrape
+            scrapeName='ntxsoccer'
+            title='North Texas Soccer'
+            />
+          }>
+          </Route>
+          <Route path="nyswysa" element={
+            <SimpleScrape
+            scrapeName='nyswysa'
+            title='North Texas Soccer'
+            />
+          }>
+          </Route>
+          <Route path="ohiosoccer" element={
+            <SimpleScrape
+            scrapeName='ohiosoccer'
+            title='Ohio Soccer'
+            />
+          }>
+          </Route>
+          <Route path="soccerindiana" element={
+            <SimpleScrape
+            scrapeName='soccerindiana'
+            title='Soccer Indiana'
+            />
+          }>
+          </Route>
+          <Route path="soccermaine" element={
+            <SimpleScrape
+            scrapeName='soccermaine'
+            title='Soccer Maine'
+            />
+          }>
+          </Route>
+          
           <Route path="/" element={
               <MainMenu/> 
             }>

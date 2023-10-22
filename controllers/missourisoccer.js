@@ -24,7 +24,7 @@ async function filloutAndClick(page, record) {
   await utils.wait(500);
 };
 
-async function scrapePage(page, record) {
+async function scrapePage(page, record, socket) {
   console.log('scraping page');
 
   await page.waitForSelector('#featurecardPanel', {timeout: 15000});
@@ -68,7 +68,7 @@ async function scrapePage(page, record) {
 }
 
 
-async function init () {
+async function init (socket) {
     console.log('init');
     //await readData();
     console.log('warming up');
@@ -95,14 +95,22 @@ async function init () {
       csvRecords = await page.$$('div[role="button"]:not([class])');
       console.log('found records');
       console.log(csvRecords.length);
+      let stepSize = Math.ceil(csvRecords.length / 10); // Calculate step size outside the loop
+      let percent = 0; // Initialize percent
+      socket.send('scraping page');
       for (let i = 0;i < csvRecords.length; i++) {
         console.log(i);
         console.log(csvRecords[i]);
         await filloutAndClick(page, csvRecords[i]);
         wait(200);
-        let ret = await scrapePage(page, i);
+        let ret = await scrapePage(page, i, socket);
         let csv = ret.join();
         fs.appendFileSync(OUTPUT_FILE, csv);
+        //socket.send(`scraped ${i} of ${csvRecords.length}`);
+        percent = ((i + 1) / csvRecords.length) * 100;
+        if (i % stepSize === 0) {
+          socket.send(`percentComplete:${percent}`);
+        }
       }
     } catch(e) {
         console.error('there was an error');
@@ -112,14 +120,16 @@ async function init () {
     await browser.close();
 }
 
-exports.missourisoccer = async (req, res, next) => {
+exports.missourisoccer = async (socket) => {
     try {
         console.log('missourisoccer');
-        await init();
-        res.send({msg: 'ok'});
+        socket.send('inside soccer controller (missourisoccer)');
+        await init(socket);
+        socket.send('Scrape Complete!');
+        socket.send(`percentComplete:${100}`);
       } catch (error) {
         console.error('there was an error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        socket.send('error');
       }
 };

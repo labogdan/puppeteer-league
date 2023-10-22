@@ -17,8 +17,9 @@ function inputURL(urlSlug) {
   return `https://www.kansasyouthsoccer.org/${urlSlug}/`
 }
 
-async function scrapePage_i(page, record) {
+async function scrapePage_i(page, record, socket) {
   console.log('scraping page');
+  socket.send(`scraping page i`);
 
   await page.waitForSelector('.grid_9.push_3.main-rail div.block', {timeout: 15000});
   console.log('found results');
@@ -75,8 +76,9 @@ async function scrapePage_i(page, record) {
   return retVal;
 }
 
-async function scrapePage_ii(page, record) {
+async function scrapePage_ii(page, record, socket) {
   console.log('scraping page');
+  socket.send(`scraping page ii`);
 
   await page.waitForSelector('.grid_9.push_3.main-rail div.block', {timeout: 15000});
   console.log('found results');
@@ -118,8 +120,9 @@ async function scrapePage_ii(page, record) {
   return retVal;
 }
 
-async function scrapePage_iv(page, record) {
+async function scrapePage_iv(page, record, socket) {
   console.log('scraping page');
+  socket.send(`scraping page iv`);
 
   await page.waitForSelector('.grid_9.push_3.main-rail div.block', {timeout: 15000});
   console.log('found results');
@@ -149,7 +152,7 @@ async function scrapePage_iv(page, record) {
   return retVal;
 }
 
-async function init () {
+async function init (socket) {
     console.log('init');
     //await readData();
     console.log('warming up');
@@ -177,23 +180,29 @@ async function init () {
         switch (csvRecords[i]) {
           case 'district-i':
             var scrapePage = scrapePage_i;
+            socket.send(`percentComplete:${20}`);
             break;
           case 'district-ii':
             var scrapePage = scrapePage_ii;
+            socket.send(`percentComplete:${30}`);
             break;
           case 'district-iii':
             var scrapePage = scrapePage_ii;
+            socket.send(`percentComplete:${40}`);
             break;
           case 'district-iv':
             var scrapePage = scrapePage_iv;
+            socket.send(`percentComplete:${50}`);
             break;
           case 'district-v':
             var scrapePage = scrapePage_ii;
+            socket.send(`percentComplete:${60}`);
             break;
           default:
             var scrapePage = scrapePage_i;
+            socket.send(`percentComplete:${70}`);
         }
-        let ret = await scrapePage(page, csvRecords[i]);
+        let ret = await scrapePage(page, csvRecords[i], socket);
         let csv = ret.join();
         fs.appendFileSync(OUTPUT_FILE, csv);
       } catch(e) {
@@ -202,21 +211,23 @@ async function init () {
       }
     }
     
-      
+    socket.send(`percentComplete:${80}`);
     
 
     await page.close();
     await browser.close();
 }
 
-exports.kansasyouthsoccer = async (req, res, next) => {
+exports.kansasyouthsoccer = async (socket) => {
     try {
         console.log('kansasyouthsoccer');
-        await init();
-        res.send({msg: 'ok'});
+        socket.send(`percentComplete:${10}`);
+        await init(socket);
+        socket.send(`percentComplete:${100}`);
+        socket.send('Scrape Complete!');
       } catch (error) {
         console.error('there was an error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        socket.send('error');
       }
 };

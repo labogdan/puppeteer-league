@@ -4,7 +4,7 @@ const utils = require('../utils');
 
 let INPUT_FILE = '';
 let INPUT_URL = 'https://ohio-soccer.org/find-a-place-to-play/';
-let OUTPUT_FILE = 'data/output/ohio-soccer.csv';
+let OUTPUT_FILE = 'data/output/ohiosoccer-urls.csv';
 let csvRecords = [];
 
 function wait(val) {
@@ -13,8 +13,9 @@ function wait(val) {
 
 let result = [];
 
-async function scrapePage(page) {
+async function scrapePage(page, socket) {
   console.log('scraping page');
+  socket.send(`scraping page`);
 
   await page.waitForSelector('.elementor-tabs', {timeout: 15000});
   console.log('found results');
@@ -51,10 +52,11 @@ async function scrapePage(page) {
 }
 
 
-async function init () {
+async function init (socket) {
     console.log('init');
     //await readData();
     console.log('warming up');
+    socket.send('warming up');
     const browser = await puppeteer.launch({
         headless: true,
         devtools: false,
@@ -75,7 +77,7 @@ async function init () {
     try {
         await page.goto(INPUT_URL, {waitUntil: 'domcontentloaded', timeout: 15000});
         console.log('goto');
-        let ret = await scrapePage(page);
+        let ret = await scrapePage(page, socket);
         let csv = ret.join();
         fs.appendFileSync(OUTPUT_FILE, csv);
 
@@ -87,14 +89,17 @@ async function init () {
     await browser.close();
 }
 
-exports.ohiosoccer = async (req, res, next) => {
+exports.ohiosoccer = async (socket) => {
     try {
         console.log('ohio-soccer');
-        await init();
-        res.send({msg: 'ok'});
+        socket.send('inside soccer controller (ohio-soccer)');
+        socket.send(`percentComplete:${30}`);
+        await init(socket);
+        socket.send('Scrape Complete!');
+        socket.send(`percentComplete:${100}`);
       } catch (error) {
         console.error('there was an error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        socket.send('error');
       }
 };

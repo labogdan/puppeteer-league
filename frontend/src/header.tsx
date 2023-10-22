@@ -40,7 +40,7 @@ const Header = () => {
     return (
       <>
         <Navbar className="py-3 px-3">
-      <Navbar.Brand href="#">Scraper App</Navbar.Brand>
+      <Navbar.Brand href="/">Scraper App</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
         <Nav className="ml-auto">

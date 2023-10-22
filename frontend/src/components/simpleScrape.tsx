@@ -114,7 +114,7 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
           </Col>
         </Row>
         
-      <DownloadButton filename={scrapeName + "-urls.csv"} text="Download CSV" fileExists={fileExists} />
+      <DownloadButton filename={scrapeName + "-urls.csv"} text="Download CSV" fileExists={fileExists}/>
       <DeleteButton filename={scrapeName + "-urls.csv"} text="Delete CSV" fileExists={fileExists} deleteSuccess={checkFileExists} />
     </div>
     </Container>

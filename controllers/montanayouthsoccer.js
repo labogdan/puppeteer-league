@@ -13,8 +13,9 @@ function wait(val) {
 
 let result = [];
 
-async function scrapePage(page) {
+async function scrapePage(page, socket) {
   console.log('scraping page');
+  socket.send(`scraping page`);
 
   await page.waitForSelector('main.content', {timeout: 15000});
   console.log('found results');
@@ -66,10 +67,11 @@ async function scrapePage(page) {
 }
 
 
-async function init () {
+async function init (socket) {
     console.log('init');
     //await readData();
     console.log('warming up');
+    socket.send(`warming up`);
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
@@ -90,7 +92,7 @@ async function init () {
     await page.goto(INPUT_URL, {waitUntil: 'domcontentloaded', timeout: 15000});
     
     try {
-      let ret = await scrapePage(page);
+      let ret = await scrapePage(page, socket);
       let csv = ret.join();
       fs.appendFileSync(OUTPUT_FILE, csv);
     } catch(e) {
@@ -101,14 +103,17 @@ async function init () {
     await browser.close();
 }
 
-exports.montanayouthsoccer = async (req, res, next) => {
+exports.montanayouthsoccer = async (socket) => {
     try {
-        console.log('perfectgameUrls');
-        await init();
-        res.send({msg: 'ok'});
+        console.log('montanayouthsoccer');
+        socket.send('inside soccer controller (montanayouthsoccer)');
+        socket.send(`percentComplete:${30}`);
+        await init(socket);
+        socket.send('Scrape Complete!');
+        socket.send(`percentComplete:${100}`);
       } catch (error) {
         console.error('there was an error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        socket.send('error');
       }
 };

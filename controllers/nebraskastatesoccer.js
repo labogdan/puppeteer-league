@@ -22,8 +22,9 @@ async function filloutAndClick(page) {
   console.log('waited');
 };
 
-async function scrapePage(page) {
+async function scrapePage(page, socket) {
   console.log('scraping page');
+  socket.send(`scraping page`);
 
   await page.waitForSelector('#locationList', {timeout: 15000});
   console.log('found results');
@@ -33,7 +34,7 @@ async function scrapePage(page) {
     
     let utils = {};
     utils.removeWhitespaceAndNewlines = (input) => {
-      return input.replace(/\s/g, "");
+      return input.replace(/\s/g, " ");
     }
 
     let elems = document.querySelectorAll('#locationList tr.list');
@@ -67,10 +68,11 @@ async function scrapePage(page) {
 }
 
 
-async function init () {
+async function init (socket) {
     console.log('init');
     //await readData();
     console.log('warming up');
+    socket.send(`warming up`);
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
@@ -92,7 +94,7 @@ async function init () {
     
     try {
       await filloutAndClick(page);
-      let ret = await scrapePage(page);
+      let ret = await scrapePage(page, socket);
       let csv = ret.join();
       fs.appendFileSync(OUTPUT_FILE, csv);
     } catch(e) {
@@ -103,14 +105,17 @@ async function init () {
     await browser.close();
 }
 
-exports.nebraskastatesoccer = async (req, res, next) => {
+exports.nebraskastatesoccer = async (socket) => {
     try {
         console.log('nebraskastatesoccer');
-        await init();
-        res.send({msg: 'ok'});
+        socket.send('inside soccer controller (nebraskastatesoccer)');
+        socket.send(`percentComplete:${30}`);
+        await init(socket);
+        socket.send('Scrape Complete!');
+        socket.send(`percentComplete:${100}`);
       } catch (error) {
         console.error('there was an error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        socket.send('error');
       }
 };
