@@ -26,7 +26,14 @@ const MainMenu = () => {
     { name: 'Ohio Soccer', path: 'ohiosoccer' },
     { name: 'Indiana Soccer', path: 'soccerindiana' },
     { name: 'Maine Soccer', path: 'soccermaine' },
-    
+    { name: 'UPSL Soccer', path: 'upslsoccer' },
+    { name: 'Super Y League Soccer', path: 'sylsoccerconnect' },
+    { name: 'USL W League Soccer', path: 'uslwleague' },
+    { name: 'ushl', path: 'ushl' },
+    { name: 'nahl', path: 'nahl' },
+    { name: 'nahl-final', path: 'nahl-final' },
+    { name: 'nahl3', path: 'nahl3' },
+    { name: 'nahl3-final', path: 'nahl3-final' },
   ];
 
     return (

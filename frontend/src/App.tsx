@@ -148,6 +148,62 @@ function App() {
             />
           }>
           </Route>
+          <Route path="upslsoccer" element={
+            <SimpleScrape
+            scrapeName='upslsoccer'
+            title='UPSL Soccer'
+            />
+          }>
+          </Route>
+          <Route path="sylsoccerconnect" element={
+              <SimpleScrape
+                scrapeName="sylsoccerconnect"
+                title="SYLSoccerConnect"
+              />
+            }>
+          </Route>
+          <Route path="uslwleague" element={
+              <SimpleScrape
+                scrapeName="uslwleague"
+                title="USL League 2"
+              />
+            }>
+          </Route>
+          <Route path="ushl" element={
+              <SimpleScrape
+                scrapeName="ushl"
+                title="USHL"
+              />
+            }>
+          </Route>
+          <Route path="nahl" element={
+              <SimpleScrape
+                scrapeName="nahl"
+                title="NAHL"
+              />
+            }>
+          </Route>
+          <Route path="nahl-final" element={
+              <SimpleScrape
+                scrapeName="nahl-final"
+                title="NAHL Final"
+              />
+            }>
+          </Route>
+          <Route path="nahl3" element={
+              <SimpleScrape
+                scrapeName="nahl3"
+                title="NAHL3"
+              />
+            }>
+          </Route>
+          <Route path="nahl3-final" element={
+              <SimpleScrape
+                scrapeName="nahl3-final"
+                title="NAHL3 Final"
+              />
+            }>
+          </Route>
           
           <Route path="/" element={
               <MainMenu/> 

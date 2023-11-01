@@ -20,6 +20,14 @@ const { nyswysa } = require("./controllers/nyswysa");
 const { ohiosoccer } = require("./controllers/ohiosoccer");
 const { soccerindiana } = require("./controllers/soccerindiana");
 const { soccermaine } = require("./controllers/soccermaine");
+const { upslsoccer } = require("./controllers/upslsoccer");
+const { sylsoccerconnect } = require("./controllers/sylsoccerconnect");
+const { uslwleague } = require("./controllers/uslwleague");
+const { ushl } = require("./controllers/ushl");
+const { nahl } = require("./controllers/nahl");
+const { nahlfinal} = require("./controllers/nahl-final") ;
+const { nahl3 } = require("./controllers/nahl3");
+const { nahl3final } = require("./controllers/nahl3-final");
 
 exports.socketIO = (socket) => {
   socket.on('message', (message) => {
@@ -107,6 +115,38 @@ exports.socketIO = (socket) => {
         case 'soccermaine':
           console.log('soccermaine');
           soccermaine(socket);
+        break;
+        case 'upslsoccer':
+          console.log('upslsoccer');
+          upslsoccer(socket);
+        break;
+        case 'sylsoccerconnect':
+          console.log('sylsoccerconnect');
+          sylsoccerconnect(socket);
+        break;
+        case 'uslwleague':
+          console.log('uslwleague');
+          uslwleague(socket);
+        break;
+        case 'ushl':
+          console.log('ushl');
+          ushl(socket);
+        break;
+        case 'nahl':
+          console.log('nahl');
+          nahl(socket);
+        break;
+        case 'nahl-final':
+          console.log('nahlfinal');
+          nahlfinal(socket);
+        break;
+        case 'nahl3':
+          console.log('nahl3');
+          nahl3(socket);
+        break;
+        case 'nahl3-final':
+          console.log('nahl3final');
+          nahl3final(socket);
         break;
 
         default:
