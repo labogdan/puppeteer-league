@@ -34,6 +34,10 @@ const MainMenu = () => {
     { name: 'nahl-final', path: 'nahl-final' },
     { name: 'nahl3', path: 'nahl3' },
     { name: 'nahl3-final', path: 'nahl3-final' },
+    { name: 'arkansassoccer', path: 'arkansassoccer' },
+    { name: 'floridayouthsoccer', path: 'floridayouthsoccer' },
+    { name: 'marylandyouthsoccer', path: 'marylandyouthsoccer' },
+    { name: 'ncsoccer', path: 'ncsoccer' },
   ];
 
     return (

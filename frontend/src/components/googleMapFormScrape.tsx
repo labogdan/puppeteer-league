@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DownloadButton from './downloadButton';
+import DeleteButton from './deleteButton';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -19,6 +20,34 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
   const [socket, setSocket] = useState(null);
   const [numbers, setNumbers] = useState(['']);
   const [progress, setProgress] = useState(0);  
+  const [fileExists, setFileExists] = useState(false);
+  const [fileExistsFinal, setFileExistsFinal] = useState(false);
+  const [dynamicClass, setDynamicClass] = useState('p-2 border');
+
+  async function checkFileExists() {
+    try {
+      const response = await fetch(`/check-file-exists?filename=${scrapeName + "-urls.csv"}`);
+      const data = await response.json();
+      setFileExists(data.exists);
+    } catch (error) {
+      console.error('Error checking file existence:', error);
+    }
+  }
+
+  async function checkFileExistsFinal() {
+    try {
+      const response = await fetch(`/check-file-exists?filename=${scrapeName + "-urls.csv"}`);
+      const data = await response.json();
+      setFileExistsFinal(data.exists);
+    } catch (error) {
+      console.error('Error checking file existence:', error);
+    }
+  }
+
+  async function resetAll() {
+    setProgress(0);
+    setResponse([]);
+  }
 
   const handleNumberChange = (index:number, value:string) => {
     const newNumbers = [...numbers];
@@ -36,17 +65,31 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
   };
 
   useEffect(() => {
+    
+    checkFileExists();
+    checkFileExistsFinal();
     const newSocket = new WebSocket('ws://localhost:8080');
     newSocket.onopen = () => {
       console.log('WebSocket connection opened');
     };
     newSocket.onmessage = (event) => {
-      console.log('WebSocket message received:', event);
+      console.log('WebSocket message received:', event.data);
       
       //event.data.text().then(txt=>setResponse(txt))
       if (event.data.includes('percentComplete')) {
         let percentage = event.data.split(':')[1];
         setProgress(percentage);
+        if (percentage === '100') {
+          checkFileExists();
+          checkFileExistsFinal();
+          setDynamicClass('p-2 border bg-success text-white');
+        }
+      } else if (event.data.includes('error')) {
+        setDynamicClass('p-2 border bg-danger text-white');
+        // @ts-ignore
+        setResponse(prevUpdates => [...prevUpdates, event.data]);
+        throw new Error(event.data);
+
       } else {
         // @ts-ignore
         setResponse(prevUpdates => [...prevUpdates, event.data]);
@@ -109,12 +152,26 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
             <Stack gap={3}>
               <h5>Response: </h5>
               {response && response.map((item:string, index) => {
-                return <div className={item.indexOf('Scrape Complete!') !== -1 ? 'p-2 bg-success text-light border': 'p-2 bg-light border' } key={index}>{item}</div>
+                return <div className={item.indexOf('Scrape Complete!') !== -1 || item.indexOf('error') != -1 ? dynamicClass: 'p-2 border' } key={index}>{item}</div>
               })}
             </Stack>
           </Col>
         </Row>
         
+        <Row className="mb-3">
+          <Col>
+            <DownloadButton filename={scrapeName + "-urls.csv"} text="Download CSV 1" fileExists={fileExists}/>
+          </Col>
+          <Col>
+            <DeleteButton filename={scrapeName + "-urls.csv"} text="Delete CSV" fileExists={fileExists} deleteSuccess={checkFileExists} />
+          </Col>
+          <Col>
+            <Button onClick={() => sendMessage(`${scrapeName}-clubs:${numbers}`)} variant="primary">Scrape</Button>
+          </Col>
+          <Col>
+            <DownloadButton filename={scrapeName + "-clubs.csv"} text="Download CSV Final" fileExists={fileExistsFinal}/>
+          </Col>
+        </Row>
       
     </div>
     </Container>

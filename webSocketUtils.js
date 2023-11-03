@@ -29,6 +29,17 @@ const { nahlfinal} = require("./controllers/nahl-final") ;
 const { nahl3 } = require("./controllers/nahl3");
 const { nahl3final } = require("./controllers/nahl3-final");
 
+const { arkansassoccer } = require("./controllers/arkansassoccer");
+const { arkansassoccerclubs } = require("./controllers/arkansassoccer-clubs");
+const { floridayouthsoccer } = require("./controllers/floridayouthsoccer");
+const { floridayouthsoccerclubs } = require("./controllers/floridayouthsoccer-clubs");
+const { marylandyouthsoccer } = require("./controllers/marylandyouthsoccer");
+const { marylandyouthsoccerclubs } = require("./controllers/marylandyouthsoccer-clubs");
+const { mississippisoccer } = require("./controllers/mississippisoccer");
+const { mississippisoccerclubs } = require("./controllers/mississippisoccer-clubs");
+const { ncsoccer } = require("./controllers/ncsoccer");
+const { ncsoccerclubs } = require("./controllers/ncsoccer-clubs");
+
 exports.socketIO = (socket) => {
   socket.on('message', (message) => {
     console.log(`Received message from client: ${message}`);
@@ -147,6 +158,46 @@ exports.socketIO = (socket) => {
         case 'nahl3-final':
           console.log('nahl3final');
           nahl3final(socket);
+        break;
+        case 'arkansassoccer':
+          console.log('arkansassoccer');
+          arkansassoccer(socket, message.toString().split(':')[1]);
+        break;
+        case 'arkansassoccer-clubs':
+          console.log('arkansassoccer-clubs');
+          arkansassoccerclubs(socket);
+        break;
+        case 'floridayouthsoccer':
+          console.log('floridayouthsoccer');
+          floridayouthsoccer(socket, message.toString().split(':')[1]);
+        break;
+        case 'floridayouthsoccer-clubs':
+          console.log('floridayouthsoccer-clubs');
+          floridayouthsoccerclubs(socket);
+        break;
+        case 'marylandyouthsoccer':
+          console.log('marylandyouthsoccer');
+          marylandyouthsoccer(socket, message.toString().split(':')[1]);
+        break;
+        case 'marylandyouthsoccer-clubs':
+          console.log('marylandyouthsoccer-clubs');
+          marylandyouthsoccerclubs(socket);
+        break;
+        case 'mississippisoccer':
+          console.log('mississippisoccer');
+          mississippisoccer(socket, message.toString().split(':')[1]);
+        break;
+        case 'mississippisoccer-clubs':
+          console.log('mississippisoccer-clubs');
+          mississippisoccerclubs(socket);
+        break;
+        case 'ncsoccer':
+          console.log('ncsoccer');
+          ncsoccer(socket, message.toString().split(':')[1]);
+        break;
+        case 'ncsoccer-clubs':
+          console.log('ncsoccer-clubs');
+          ncsoccerclubs(socket);
         break;
 
         default:

@@ -13,11 +13,11 @@ function wait(val) {
 
 let result = [];
 
-async function scrapePage(page, record, previous) {
-  console.log('scraping page');
+async function scrapePage(page, record, previous, socket) {
+  socket.send('scraping page');
 
   await page.waitForSelector('.location-info table tr td', {timeout: 15000});
-  console.log('found results');
+  socket.send('found results');
 
   let retVal = await page.evaluate( async (previous) => {
     let returnValue = [''];
@@ -36,10 +36,11 @@ async function scrapePage(page, record, previous) {
   return retVal;
 }
 
-async function init () {
-    console.log('init');
+async function init (socket) {
+  socket.send('init');
+  
     csvRecords = await utils.readData(INPUT_FILE);
-    console.log('warming up');
+    socket.send('warming up');
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
@@ -65,8 +66,9 @@ async function init () {
       console.log(previous);
       try {
         await page.goto(record, {waitUntil: 'domcontentloaded', timeout: 15000});
-        let ret = await scrapePage(page, record, previous);
-        console.log(ret.length);
+        let ret = await scrapePage(page, record, previous, socket);
+        socket.send(`percentComplete:${(i+1)/csvRecords.length*100}`);
+        
         if (ret.length === 1) {
           break;
         }
@@ -82,14 +84,15 @@ async function init () {
     await browser.close();
 }
 
-exports.floridayouthsoccer = async (req, res, next) => {
-    try {
-        console.log('floridayouthsoccer');
-        await init();
-        res.send({msg: 'ok'});
-      } catch (error) {
-        console.error('there was an error');
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-      }
+exports.floridayouthsoccerclubs = async (socket) => {
+  try {
+      console.log('floridayouthsoccerclubs');
+      socket.send('inside soccer controller (floridayouthsoccerclubs)');
+      await init(socket);
+      socket.send('Scrape Complete!');
+    } catch (error) {
+      console.error('there was an error');
+      console.error(error);
+      socket.send('error');
+    }
 };

@@ -13,11 +13,11 @@ function wait(val) {
 
 let result = [];
 
-async function scrapePage(page, record, previous) {
-  console.log('scraping page');
+async function scrapePage(page, record, previous, socket) {
+  socket.send('scraping page');
 
   await page.waitForSelector('.location-info table tr td', {timeout: 15000});
-  console.log('found results');
+  socket.send('found results');
 
   let retVal = await page.evaluate( async (previous) => {
     let returnValue = [''];
@@ -36,10 +36,10 @@ async function scrapePage(page, record, previous) {
   return retVal;
 }
 
-async function init () {
-    console.log('init');
+async function init (socket) {
+    socket.send('init');
     csvRecords = await utils.readData(INPUT_FILE);
-    console.log('warming up');
+    socket.send('warming up');
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
@@ -57,14 +57,15 @@ async function init () {
         }
     });
 
-    for (i = 0; i < csvRecords[0].length; i++) {
-      let record = csvRecords[0][i][4];
+    for (i = 0; i < csvRecords[0].length - 1; i++) {
+      let record = csvRecords[0][i][csvRecords[0][i].length - 2];
       let previous = csvRecords[0][i];
       console.log(record);
       console.log(previous);
       try {
         await page.goto(record, {waitUntil: 'domcontentloaded', timeout: 15000});
-        let ret = await scrapePage(page, record, previous);
+        let ret = await scrapePage(page, record, previous, socket);
+        socket.send(`percentComplete:${(i+1)/csvRecords.length*100}`);
         console.log(ret.length);
         if (ret.length === 1) {
           break;
@@ -81,14 +82,15 @@ async function init () {
     await browser.close();
 }
 
-exports.marylandyouthsoccerclubs = async (req, res, next) => {
+exports.marylandyouthsoccerclubs = async (socket) => {
     try {
         console.log('marylandyouthsoccerclubs');
-        await init();
-        res.send({msg: 'ok'});
+        socket.send('inside soccer controller (marylandyouthsoccerclubs)');
+        await init(socket);
+        socket.send('Scrape Complete!');
       } catch (error) {
         console.error('there was an error');
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        socket.send('error');
       }
 };

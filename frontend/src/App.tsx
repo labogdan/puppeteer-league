@@ -204,6 +204,34 @@ function App() {
               />
             }>
           </Route>
+          <Route path="arkansassoccer" element={
+              <ScrapeWithButton
+                scrapeName="arkansassoccer"
+                title="Arkansas Soccer"
+              />
+            }>
+          </Route>
+          <Route path="floridayouthsoccer" element={
+              <ScrapeWithButton
+                scrapeName="floridayouthsoccer"
+                title="Florida Youth Soccer"
+              />
+            }>
+          </Route>
+          <Route path="marylandyouthsoccer" element={
+              <ScrapeWithButton
+                scrapeName="marylandyouthsoccer"
+                title="Maryland Youth Soccer"
+              />
+            }>
+          </Route>
+          <Route path="ncsoccer" element={
+              <ScrapeWithButton
+                scrapeName="ncsoccer"
+                title="North Carolina Soccer"
+              />
+            }>
+          </Route>
           
           <Route path="/" element={
               <MainMenu/> 
