@@ -24,6 +24,13 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
   const [fileExistsFinal, setFileExistsFinal] = useState(false);
   const [dynamicClass, setDynamicClass] = useState('p-2 border');
 
+  const { protocol, hostname, port } = window.location;
+  
+  const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsUrl = `${wsProtocol}//${hostname}:${port}`;
+  const newSocket = new WebSocket(wsUrl);
+  
+
   async function checkFileExists() {
     try {
       const response = await fetch(`/check-file-exists?filename=${scrapeName + "-urls.csv"}`);
@@ -68,7 +75,7 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
     
     checkFileExists();
     checkFileExistsFinal();
-    const newSocket = new WebSocket('ws://localhost:8080');
+    
     newSocket.onopen = () => {
       console.log('WebSocket connection opened');
     };
