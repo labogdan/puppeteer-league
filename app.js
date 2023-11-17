@@ -60,8 +60,8 @@ app.get('*', (req, res) => {
 
 
 
-server.listen(8080, () => {
-  console.log('WebSocket server is running on port 8080'); 
+server.listen(port, () => {
+  console.log(`WebSocket server is running on port ${port}`); 
 });
 
 
