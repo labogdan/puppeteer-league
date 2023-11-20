@@ -1,3 +1,44 @@
+//require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require("path");
+
+const apiRoutes = require('./routes');
+
+const app = express();
+const PORT = process.env.PORT || 8080;
+
+app.use(cors({ origin: 'https://inclinedteststore.myshopify.com' }));
+
+// application/json
+app.use(bodyParser.json());
+
+// to get access to the server from any domain like postman.
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
+//declaration of the routes.
+app.use('/api', apiRoutes);
+app.use(express.static(__dirname + '/frontend/build'));
+app.use(express.static('public'));
+
+// frontend app
+/*app.get("*", (req, res) => {
+    let url = path.join(__dirname, 'frontend/build', 'index.html');
+    if (!url.startsWith('/app/'))
+        url = url.substring(1);
+    res.sendFile(url);
+});*/
+
+
+app.listen(PORT);
+
+
 /*const express = require('express');
 const app = express();
 const path = require('path');
@@ -18,7 +59,7 @@ app.listen(port, () => {
 });
 */
 
-
+/*
 
 const express = require("express");
 
@@ -62,7 +103,7 @@ server.listen(port, () => {
   console.log(`WebSocket server is running on port ${port}`); 
 });
 
-
+*/
 
 
 
