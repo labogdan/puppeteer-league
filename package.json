@@ -4,7 +4,7 @@
   "description": "A sample Node.js app using Express 4",
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache && cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
