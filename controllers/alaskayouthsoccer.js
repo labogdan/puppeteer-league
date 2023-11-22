@@ -59,7 +59,8 @@ async function init (socket) {
     const browser = await puppeteer.launch({
         headless: true,
         devtools: false,
-        slowMo: 100
+        slowMo: 100,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     console.log('spawned browser');
 
