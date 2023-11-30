@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DownloadButton from './downloadButton';
 import DeleteButton from './deleteButton';
 
@@ -27,7 +27,7 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
   
   const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:';
   const wsUrl = `${wsProtocol}//${hostname}:${port}`;
-  const newSocket = new WebSocket(wsUrl);
+  const ws = useRef<WebSocket | null>(null);
 
   async function checkFileExists() {
     try {
@@ -44,16 +44,13 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
     setResponse([]);
   }
 
-  useEffect(() => {
-    
-    checkFileExists();
-    
-    newSocket.onopen = () => {
+  const openWebSocket = () => {
+    ws.current = new WebSocket(wsUrl);
+    ws.current.onopen = () => {
       console.log('WebSocket connection opened');
     };
-    newSocket.onmessage = (event) => {
+    ws.current.onmessage = (event) => {
       console.log('WebSocket message received:', event.data);
-      
       //event.data.text().then(txt=>setResponse(txt))
       if (event.data.includes('percentComplete')) {
         let percentage = event.data.split(':')[1];
@@ -73,15 +70,25 @@ const GoogleMapScraper: React.FC<GoogleMapScraperProps> = ({ scrapeName, title }
         setResponse(prevUpdates => [...prevUpdates, event.data]);
       }
     };
-    newSocket.onclose = () => {
+    ws.current.onclose = () => {
       console.log('WebSocket connection closed');
+      setTimeout(openWebSocket, 2000);
     };
 
     // @ts-ignore
-    setSocket(newSocket);
+    setSocket(ws.current);
+  }
+
+  useEffect(() => {
+    
+    checkFileExists();
+    
+    openWebSocket();
 
     return () => {
-      newSocket.close();
+      if (ws.current) {
+        ws.current.close();
+      }
     };
   }, []);
 
