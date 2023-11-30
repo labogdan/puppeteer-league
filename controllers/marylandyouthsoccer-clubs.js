@@ -40,11 +40,7 @@ async function init (socket) {
     socket.send('init');
     csvRecords = await utils.readData(INPUT_FILE);
     socket.send('warming up');
-    const browser = await puppeteer.launch({
-        headless: false,
-        devtools: false,
-        slowMo: 100
-    });
+    const browser = await utils.initChrome(socket);
     console.log('spawned browser');
 
     const page = await browser.newPage();

@@ -53,11 +53,7 @@ async function scrapePage(page, socket) {
 async function init (socket) {
     console.log('init');
     console.log('warming up');
-    const browser = await puppeteer.launch({
-        headless: true,
-        devtools: true,
-        slowMo: 200
-    });
+    const browser = await utils.initChrome(socket);
     console.log('spawned browser');
 
     const page = await browser.newPage();

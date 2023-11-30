@@ -1,4 +1,5 @@
 const fs = require("fs");
+const puppeteer = require('puppeteer');
 
 exports.wait = (val) => {
     return new Promise(resolve => setTimeout(resolve, val));
@@ -29,6 +30,23 @@ exports.findWithSelectors = (parent, selector) => {
 
   return foundElements;
 }
+
+exports.initChrome = async (socket) => {
+  const browser = await puppeteer.launch({
+    headless: true,
+    devtools: false,
+    slowMo: 100,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  if (socket && typeof socket.send === 'function') {
+    socket.send('spawned browser');
+  } else {
+    console.error('Invalid socket object or missing send method.');
+  }
+
+  return browser;
+};
 
 exports.find = (parent, selector) => {
   let foundElements = [];

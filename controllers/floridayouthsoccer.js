@@ -66,11 +66,7 @@ async function init (socket, zipCodes) {
     socket.send(`zip codes: ${csvRecords}`);
   }
 
-    const browser = await puppeteer.launch({
-        headless: false,
-        devtools: false,
-        slowMo: 100
-    });
+  const browser = await utils.initChrome(socket);
     socket.send('spawned browser');
 
   const page = await browser.newPage();

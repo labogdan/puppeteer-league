@@ -57,11 +57,7 @@ async function init (socket) {
     //await readData();
     console.log('warming up');
     socket.send('warming up');
-    const browser = await puppeteer.launch({
-        headless: true,
-        devtools: false,
-        slowMo: 100
-    });
+    const browser = await utils.initChrome(socket);
     console.log('spawned browser');
 
     const page = await browser.newPage();
